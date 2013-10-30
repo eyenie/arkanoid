@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
  
 project(arkanoid)
 
-SET(GCC_COVERAGE_COMPILE_FLAGS "-Wall")
+SET(GCC_COVERAGE_COMPILE_FLAGS "-Wall -std=c++11")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
  
 if(UNIX)
@@ -72,11 +72,17 @@ endif()
  
 set(HEADERS
     src/Application.h
+    src/BillboardAtlas.h
+    src/Game.h
+    src/NLTmxMap.h
 )
  
 set(SOURCES
 	src/main.cpp
     src/Application.cpp
+    src/BillboardAtlas.cpp
+    src/Game.cpp
+    src/NLTmxMap.cpp
 )
  
 include_directories( ${SDL2_INCLUDE_DIR}

@@ -1,7 +1,6 @@
 #include "Application.h"
 #include <OgreWindowEventUtilities.h>
-#include <OgreBillboard.h>
-#include <OgreBillboardSet.h>
+#include "Game.h"
 
 Application::Application()
     : mRoot(0),
@@ -30,16 +29,15 @@ Application::~Application(void)
 
 void Application::run()
 {
-    if (!init())
+    if (!initWindow())
         return;
 
-    createCamera();
-    loadResources();
+    initGame();
 
     mainLoop();
 }
 
-bool Application::init()
+bool Application::initWindow()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         return false;
@@ -71,30 +69,34 @@ bool Application::init()
     mRoot->initialise(false);
     Ogre::NameValuePairList params;
     params["currentGLContext"] = Ogre::String("True");
+    //FIXME
     ogreWindow = mRoot->createRenderWindow("main", 640, 480, false, &params);
     ogreWindow->setVisible(true);
 
     return true;
 }
 
-void Application::createCamera()
+void Application::initGame()
 {
     mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
     mCamera = mSceneMgr->createCamera("main");
     mViewport = ogreWindow->addViewport(mCamera);
     //FIXME
-    mViewport->setBackgroundColour(Ogre::ColourValue(1,0,1));
+    mViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
     mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
 
     //FIXME
     mCamera->setNearClipDistance(1.5f);
-	mCamera->setFarClipDistance(3000.0f);
-    mCamera->setPosition(0, 0, 400);
+	mCamera->setFarClipDistance(4000.0f);
+    mCamera->setPosition(0, 0, 3900.0f);
     mCamera->lookAt(0, 0, 0);
-}
 
-void Application::loadResources()
-{
+    Ogre::ResourceGroupManager *rgm = Ogre::ResourceGroupManager::getSingletonPtr();
+    rgm->addResourceLocation("/home/eyenie/dev/arkanoid/assets", "FileSystem", "General");
+    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
+    mGame = new Game(mSceneMgr);
+    mGame->run("level1.tmx");
 }
 
 void Application::mainLoop()

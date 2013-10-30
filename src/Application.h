@@ -6,6 +6,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+class Game;
+
 class Application 
 {
 public:
@@ -15,8 +17,8 @@ public:
     void run();
 
 private:
-    bool init();
-    void createCamera();
+    bool initWindow();
+    void initGame();
     void loadResources();
     void mainLoop();
 
@@ -28,6 +30,8 @@ private:
     Ogre::SceneManager *mSceneMgr;
     Ogre::Camera *mCamera;
     Ogre::Viewport *mViewport;
+
+    Game *mGame;
 };
 
 #endif // #ifndef APPLICATION_H_

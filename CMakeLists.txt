@@ -77,6 +77,10 @@ set(HEADERS
     src/Application.h
     src/BillboardAtlas.h
     src/Game.h
+    src/GameObj.h
+    src/GameObjBall.h
+    src/GameObjBrick.h
+    src/GameObjWall.h
     src/NLTmxMap.h
 )
  
@@ -85,6 +89,10 @@ set(SOURCES
     src/Application.cpp
     src/BillboardAtlas.cpp
     src/Game.cpp
+    src/GameObj.cpp
+    src/GameObjBall.cpp
+    src/GameObjBrick.cpp
+    src/GameObjWall.cpp
     src/NLTmxMap.cpp
 )
  

@@ -97,6 +97,7 @@ void Application::initGame()
 
     mGame = new Game(mSceneMgr);
     mGame->run("level1.tmx");
+    mRoot->addFrameListener(mGame);
 }
 
 void Application::mainLoop()

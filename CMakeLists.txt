@@ -4,7 +4,7 @@ project(arkanoid)
 
 SET(GCC_COVERAGE_COMPILE_FLAGS "-Wall -std=c++11")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
- 
+
 if(UNIX)
 	if(EXISTS "/usr/local/lib/OGRE/cmake")
 
@@ -69,6 +69,9 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 	add_definitions(-DBOOST_ALL_NO_LIB)
 	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
 endif()
+
+set(BOX2D_VERSION 2.1.0)
+add_subdirectory(libs/box2d-2.2.1/Box2D)
  
 set(HEADERS
     src/Application.h
@@ -87,13 +90,14 @@ set(SOURCES
  
 include_directories( ${SDL2_INCLUDE_DIR}
 	${OGRE_INCLUDE_DIRS}
+    ${Box2D_SOURCE_DIR}
 )
  
 add_executable(arkanoid ${HEADERS} ${SOURCES})
  
 set_target_properties(arkanoid PROPERTIES DEBUG_POSTFIX _d)
  
-target_link_libraries(arkanoid ${OGRE_LIBRARIES} ${SDL2_LIBRARY})
+target_link_libraries(arkanoid ${OGRE_LIBRARIES} ${SDL2_LIBRARY} Box2D)
  
 if(MINGW OR UNIX)
 	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
@@ -111,4 +115,3 @@ if(UNIX)
 	)
  
 endif(UNIX)
- 

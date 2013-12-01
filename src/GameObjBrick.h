@@ -7,11 +7,11 @@ class b2World;
 
 class GameObjBrick : public GameObj {
 public:
-    GameObjBrick(const GameObjProp& prop, BillboardAtlas *mBBAtlas, b2World *mB2World);
+    GameObjBrick(Game* game, const GameObjProp& prop);
     virtual ~GameObjBrick();
 
     void update(double dt);
-    typ type() { return BRICK; }
+    type_ type() { return BRICK; }
 
 private:
 

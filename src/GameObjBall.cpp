@@ -4,16 +4,17 @@
 #include <OgreBillboard.h>
 #include <Box2D/Box2D.h>
 
-GameObjBall::GameObjBall(const GameObjProp& prop, BillboardAtlas *mBBAtlas, b2World *mB2World)
+GameObjBall::GameObjBall(Game* game, const GameObjProp& prop) : GameObj(game)
 {
-    mBillboard = mBBAtlas->createBillboard(prop.filename, prop.width, prop.height);
+    mBillboard = mGame->atlas()->createBillboard(prop.filename, prop.width, prop.height);
     mBillboard->setPosition(prop.x, prop.y, 0.0f);
 
     b2BodyDef bd;
     bd.type = b2_dynamicBody;
     bd.fixedRotation = true;
     bd.position.Set(prop.x / Game::PPM, prop.y / Game::PPM); 
-    mB2Body = mB2World->CreateBody(&bd);
+    mB2Body = mGame->world()->CreateBody(&bd);
+    mB2Body->SetUserData(this);
 
     b2CircleShape shape;
     shape.m_radius = prop.width / Game::PPM / 2;
@@ -22,8 +23,10 @@ GameObjBall::GameObjBall(const GameObjProp& prop, BillboardAtlas *mBBAtlas, b2Wo
     fd.restitution = 1.0f;
     fd.density = 1.0f;
     fd.friction = 0.0f;
+    fd.filter.categoryBits = GameObj::BALL;
+    fd.filter.maskBits = GameObj::BRICK | GameObj::WALL;
     mB2Body->CreateFixture(&fd);
-//    mB2Body->SetLinearVelocity(b2Vec2(0.9, 0.9));
+    mB2Body->SetLinearVelocity(b2Vec2(0.9, 0.9));
 }
 
 GameObjBall::~GameObjBall() 
@@ -34,6 +37,5 @@ GameObjBall::~GameObjBall()
 void GameObjBall::update(double dt)
 {
     b2Vec2 pos = mB2Body->GetPosition();
-    b2Vec2 vel = mB2Body->GetLinearVelocity();
     mBillboard->setPosition(pos.x * Game::PPM, pos.y * Game::PPM, 0.0f);
 }

@@ -44,3 +44,10 @@ Ogre::Billboard *BillboardAtlas::createBillboard(const std::string& name, double
     bb->setDimensions(w, h);
     return bb;
 }
+
+void BillboardAtlas::removeBillboard(Ogre::Billboard *bb)
+{
+    bbset->removeBillboard(bb);
+}
+
+

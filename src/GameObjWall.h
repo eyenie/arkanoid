@@ -7,11 +7,11 @@ class b2World;
 
 class GameObjWall : public GameObj {
 public:
-    GameObjWall(const GameObjProp& prop, BillboardAtlas *mBBAtlas, b2World *mB2World);
+    GameObjWall(Game* game, const GameObjProp& prop);
     virtual ~GameObjWall();
 
     void update(double dt);
-    typ type() { return WALL; }
+    type_ type() { return WALL; }
 private:
 };
 

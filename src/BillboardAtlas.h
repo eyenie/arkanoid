@@ -9,6 +9,7 @@ public:
     virtual ~BillboardAtlas();
 
     Ogre::Billboard *createBillboard(const std::string& name, double w, double h);
+    void removeBillboard(Ogre::Billboard *bb);
 
 private:
     Ogre::BillboardSet* bbset;

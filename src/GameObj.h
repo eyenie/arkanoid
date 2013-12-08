@@ -2,54 +2,46 @@
 #define GAMEOBJ_H_
 
 #include <string>
+#include <memory>
 
 class b2Body;
-class Game;
+class GameObjManager;
 namespace Ogre {
     class Billboard;
 }
-
-struct GameObjProp {
-    std::string filename;
-    float x;
-    float y;
-    float width;
-    float height;
-};
 
 class GameObj {
 public:
     typedef std::shared_ptr<GameObj> SharedPtr;
 
-    enum type_ {
+    enum Type {
         BALL   = 0x01, 
         BRICK  = 0x02, 
         PADDLE = 0x04,
         WALL   = 0x08
     };
 
-    enum state_ {
-        DESTROYED,
-        ACTIVE
+    enum State {
+        ACTIVE,
+        DESTROYED
     };
 
-    GameObj(Game *game) : mGame(game), mB2Body(0), mBillboard(0), mState(ACTIVE) {};
-    virtual void update(double dt) = 0;
-    virtual type_ type() = 0;
+    GameObj(GameObjManager *mgr, Ogre::Billboard *bb, b2Body *body);
     virtual ~GameObj();
 
-    state_ state() { return mState; }
-    b2Body *body() { return mB2Body; }
-    Ogre::Billboard *billboard() { return mBillboard; }
-
-    void setState(state_ s) { mState = s; }
-
-
+    virtual void update(double dt) = 0;
+    float        getX();
+    float        getY();
+    void         setPosition(float x, float y);
+    float        getWidth();
+    float        getHeight();
+    State        getState();
+    void         setState(State s);
 protected:
-    Game *mGame;
-    b2Body* mB2Body;
-    Ogre::Billboard* mBillboard;
-    enum state_ mState;
+    GameObjManager *    mManager;
+    enum State          mState;
+    Ogre::Billboard *   ogreBillboard;
+    b2Body *            boxBody;
 };
 
 #endif /* end of include guard: GAMEOBJ_H_ */

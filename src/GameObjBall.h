@@ -2,16 +2,16 @@
 #define GAMEOBJBALL_H_
 
 #include "GameObj.h"
-class BillboardAtlas;
+#include "GameObjManager.h"
+
 class b2World;
 
 class GameObjBall : public GameObj {
 public:
-    GameObjBall(Game* game, const GameObjProp& prop);
+    GameObjBall(GameObjManager* mgr, Ogre::Billboard* bb, b2Body* body);
     virtual ~GameObjBall();
 
     void update(double dt);
-    type_ type() { return BALL; }
 private:
 };
 

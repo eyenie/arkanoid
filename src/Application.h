@@ -14,24 +14,26 @@ public:
     Application();
     ~Application(void);
 
-    void run();
+    void                 run();
+    Ogre::Camera *       getCamera();
+    Ogre::SceneManager * getSceneMgr();
+    Ogre::RenderWindow * getWindow();
 
 private:
-    bool initWindow();
-    void initGame();
-    void loadResources();
-    void mainLoop();
+    bool                 initWindow();
+    void                 initGame();
+    void                 mainLoop();
 
-    Ogre::Root *mRoot;
-    Ogre::RenderWindow *ogreWindow;
-    SDL_Window *sdlWindow;
-    SDL_GLContext glContext;
+    Ogre::Root *         ogreRoot;
+    Ogre::RenderWindow * ogreWindow;
+    Ogre::SceneManager * ogreSceneMgr;
+    Ogre::Camera *       ogreCamera;
+    Ogre::Viewport *     ogreViewport;
 
-    Ogre::SceneManager *mSceneMgr;
-    Ogre::Camera *mCamera;
-    Ogre::Viewport *mViewport;
+    SDL_Window *         sdlWindow;
+    SDL_GLContext        sdlGLContext;
 
-    Game *mGame;
+    Game *               mGame;
 };
 
 #endif // #ifndef APPLICATION_H_

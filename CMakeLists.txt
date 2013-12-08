@@ -75,12 +75,12 @@ add_subdirectory(libs/box2d-2.2.1/Box2D)
  
 set(HEADERS
     src/Application.h
-    src/BillboardAtlas.h
     src/Game.h
     src/GameObj.h
     src/GameObjBall.h
     src/GameObjBrick.h
     src/GameObjContactListener.h
+    src/GameObjManager.h
     src/GameObjPaddle.h
     src/GameObjWall.h
     src/NLTmxMap.h
@@ -89,12 +89,12 @@ set(HEADERS
 set(SOURCES
 	src/main.cpp
     src/Application.cpp
-    src/BillboardAtlas.cpp
     src/Game.cpp
     src/GameObj.cpp
     src/GameObjBall.cpp
     src/GameObjBrick.cpp
     src/GameObjContactListener.cpp
+    src/GameObjManager.cpp
     src/GameObjPaddle.cpp
     src/GameObjWall.cpp
     src/NLTmxMap.cpp

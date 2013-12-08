@@ -2,22 +2,22 @@
 #include <OgreWindowEventUtilities.h>
 #include "Game.h"
 
-Application::Application()
-    : mRoot(0),
+Application::Application() : 
+    ogreRoot(0),
     ogreWindow(0),
     sdlWindow(0),
-    glContext(0)
+    sdlGLContext(0)
 {
 }
 
 Application::~Application(void)
 {
-    if (mRoot) {
-        delete mRoot;
+    if (ogreRoot) {
+        delete ogreRoot;
     }
 
-    if (glContext) {
-        SDL_GL_DeleteContext(glContext);  
+    if (sdlGLContext) {
+        SDL_GL_DeleteContext(sdlGLContext);  
     }
 
     if (sdlWindow) {
@@ -37,6 +37,21 @@ void Application::run()
     mainLoop();
 }
 
+Ogre::Camera * Application::getCamera()
+{
+    return ogreCamera;
+}
+
+Ogre::SceneManager * Application::getSceneMgr()
+{
+    return ogreSceneMgr;
+}
+
+Ogre::RenderWindow * Application::getWindow()
+{
+    return ogreWindow;
+}
+
 bool Application::initWindow()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -50,27 +65,27 @@ bool Application::initWindow()
         return false;
     }
 
-    glContext = SDL_GL_CreateContext(sdlWindow);
-    if (glContext == NULL) {
+    sdlGLContext = SDL_GL_CreateContext(sdlWindow);
+    if (sdlGLContext == NULL) {
         return false;
     }
 
-    mRoot = new Ogre::Root("", "");
+    ogreRoot = new Ogre::Root("", "");
 
     //FIXME
-    mRoot->loadPlugin("/usr/lib/OGRE/RenderSystem_GL");
+    ogreRoot->loadPlugin("/usr/lib/OGRE/RenderSystem_GL");
 
     //FIXME
-    Ogre::RenderSystem *rs = mRoot->getRenderSystemByName("OpenGL Rendering Subsystem");
+    Ogre::RenderSystem *rs = ogreRoot->getRenderSystemByName("OpenGL Rendering Subsystem");
     if (!rs) {
         return false;
     }
-    mRoot->setRenderSystem(rs);
-    mRoot->initialise(false);
+    ogreRoot->setRenderSystem(rs);
+    ogreRoot->initialise(false);
     Ogre::NameValuePairList params;
     params["currentGLContext"] = Ogre::String("True");
     //FIXME
-    ogreWindow = mRoot->createRenderWindow("main", 640, 480, false, &params);
+    ogreWindow = ogreRoot->createRenderWindow("main", 640, 480, false, &params);
     ogreWindow->setVisible(true);
 
     return true;
@@ -78,26 +93,26 @@ bool Application::initWindow()
 
 void Application::initGame()
 {
-    mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
-    mCamera = mSceneMgr->createCamera("main");
-    mViewport = ogreWindow->addViewport(mCamera);
+    ogreSceneMgr = ogreRoot->createSceneManager(Ogre::ST_GENERIC);
+    ogreCamera = ogreSceneMgr->createCamera("main");
+    ogreViewport = ogreWindow->addViewport(ogreCamera);
     //FIXME
-    mViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
-    mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
+    ogreViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
+    ogreCamera->setAspectRatio(Ogre::Real(ogreViewport->getActualWidth()) / Ogre::Real(ogreViewport->getActualHeight()));
 
     //FIXME
-    mCamera->setNearClipDistance(1.5f);
-	mCamera->setFarClipDistance(4000.0f);
-    mCamera->setPosition(0, 0, 3900.0f);
-    mCamera->lookAt(0, 0, 0);
+    ogreCamera->setNearClipDistance(1.5f);
+	ogreCamera->setFarClipDistance(4000.0f);
+    ogreCamera->setPosition(0, 0, 3900.0f);
+    ogreCamera->lookAt(0, 0, 0);
 
     Ogre::ResourceGroupManager *rgm = Ogre::ResourceGroupManager::getSingletonPtr();
     rgm->addResourceLocation("/home/eyenie/dev/arkanoid/assets", "FileSystem", "General");
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-    mGame = new Game(mSceneMgr, ogreWindow);
-    mGame->run("level1.tmx");
-    mRoot->addFrameListener(mGame);
+    mGame = new Game(this);
+    mGame->run();
+    ogreRoot->addFrameListener(mGame);
 }
 
 void Application::mainLoop()
@@ -113,12 +128,12 @@ void Application::mainLoop()
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
                     ogreWindow->resize(event.window.data1, event.window.data2);
-                    mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
+                    ogreCamera->setAspectRatio(Ogre::Real(ogreViewport->getActualWidth()) / Ogre::Real(ogreViewport->getActualHeight()));
                 }
                 break;
             }
         }
     
-        mRoot->renderOneFrame();
+        ogreRoot->renderOneFrame();
     } 
 }

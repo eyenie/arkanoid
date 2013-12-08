@@ -2,20 +2,20 @@
 #define GAMEOBJPADDLE_H_
 
 #include "GameObj.h"
-class BillboardAtlas;
+#include "GameObjManager.h"
+
 class b2World;
 
 class GameObjPaddle : public GameObj {
 public:
-    GameObjPaddle(Game* game, const GameObjProp& prop, float left, float right);
-    virtual ~GameObjPaddle();
+    GameObjPaddle(GameObjManager *mgr, Ogre::Billboard *bb, b2Body *body);
+    virtual ~GameObjPaddle() {}
 
     void update(double dt);
-    void setMinMaxX(float min, float max);
-    type_ type() { return WALL; }
+    void setBounds(float left, float right);
 private:
-    float minX;
-    float maxX;
+    float maxLeft;
+    float maxRight;
 };
 
 

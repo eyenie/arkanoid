@@ -3,6 +3,7 @@
 
 #include <OgreFrameListener.h>
 #include <OgreVector3.h>
+#include "Application.h"
 #include "GameObjContactListener.h"
 #include "GameObj.h"
 
@@ -11,28 +12,22 @@ class b2World;
 
 class Game : public Ogre::FrameListener {
 public:
-    Game(Ogre::SceneManager *scene, Ogre::RenderWindow *window);
+    Game(Application *app);
     virtual ~Game();
 
-    Ogre::Vector3 screenToWorldPos(int x, int y);
-    void run(const std::string& level);
-    BillboardAtlas *atlas();
-    b2World *world();
-
-    static const int PPM = 50.0f; //FIXME
+    void            run();
 
 protected:
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    bool            frameRenderingQueued(const Ogre::FrameEvent& evt);
 
 private:
-    void loadLevel(const std::string& level);
+    void            loadLevel(const std::string& level);
+    void            createPaddle();
+    bool            close(float x1, float x2);
 
-    Ogre::SceneManager *mSceneMgr;
-    Ogre::RenderWindow *mWindow;
-    BillboardAtlas *mBBAtlas;
-    b2World *mB2World;
-    GameObjContactListener contactListener;
-    std::vector<GameObj::SharedPtr> objects;
+    Application *                   mApplication;
+    GameObjManager *                mManager;
+    std::vector<GameObj::SharedPtr> gameObjects;
 };
 
 #endif /* end of include guard: GAME_H_ */

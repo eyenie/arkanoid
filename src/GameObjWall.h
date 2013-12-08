@@ -2,16 +2,15 @@
 #define GAMEOBJWALL_H_
 
 #include "GameObj.h"
-class BillboardAtlas;
+#include "GameObjManager.h"
 class b2World;
 
 class GameObjWall : public GameObj {
 public:
-    GameObjWall(Game* game, const GameObjProp& prop);
+    GameObjWall(GameObjManager *mgr, Ogre::Billboard *bb, b2Body *body);
     virtual ~GameObjWall();
 
     void update(double dt);
-    type_ type() { return WALL; }
 private:
 };
 

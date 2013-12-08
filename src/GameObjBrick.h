@@ -2,7 +2,6 @@
 #define GAMEOBJBRICK_H_
 
 #include "GameObj.h"
-#include "GameObjManager.h"
 
 class b2World;
 
@@ -12,8 +11,8 @@ public:
     virtual ~GameObjBrick();
 
     void update(double dt);
-private:
 
+private:
 };
 
 

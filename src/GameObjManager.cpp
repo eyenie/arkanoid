@@ -13,6 +13,8 @@
 
 GameObjManager::GameObjManager(Application *app, const std::string& atlasXml) : mApplication(app)
 {
+    registerObjects();
+
     boxWorld = new b2World(b2Vec2(0.0f, 0.0f));
     boxWorld->SetContactListener(&mContactListener);
 
@@ -53,6 +55,14 @@ void GameObjManager::update(double dt)
     boxWorld->Step(0.016f, 8, 3);
 }
 
+void GameObjManager::registerObjects()
+{
+    mConstructors.insert(std::make_pair("ball.png", &newObject<GameObjBall>));
+    mConstructors.insert(std::make_pair("brick-basic.png", &newObject<GameObjBrick>));
+    mConstructors.insert(std::make_pair("border.png", &newObject<GameObjWall>));
+    mConstructors.insert(std::make_pair("paddle.png", &newObject<GameObjPaddle>));
+}
+
 GameObj::SharedPtr GameObjManager::createObject(const GameObjDef& def)
 {
     Ogre::Billboard* bb = ogreBillboardSet->createBillboard(Ogre::Vector3(def.x, def.y, 0));
@@ -69,22 +79,10 @@ GameObj::SharedPtr GameObjManager::createObject(const GameObjDef& def)
     bd.type = b2_staticBody;
     b2Body *body = boxWorld->CreateBody(&bd);
 
-    GameObj::SharedPtr o;
-
-    if (def.filename == "ball.png") {
-        o = std::make_shared<GameObjBall>(this, bb, body);
-    } else if (def.filename == "brick-basic.png") {
-        o = std::make_shared<GameObjBrick>(this, bb, body);
-    } else if (def.filename == "border.png") {
-        o = std::make_shared<GameObjWall>(this, bb, body);
-    } else if (def.filename == "paddle.png") {
-        o = std::make_shared<GameObjPaddle>(this, bb, body);
-    } else {
-        assert(false);
-    }
-
-    return o;
+    return mConstructors.at(def.filename)(this, bb, body);
 }
+
+
 
 /* GameObjBall::GameObjBall(GameObjManager* mgr, const GameObjDef& def) : GameObj(mgr)
  * {

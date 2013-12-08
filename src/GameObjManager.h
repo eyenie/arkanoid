@@ -22,6 +22,8 @@ struct GameObjDef {
 
 class GameObjManager {
 public:
+    typedef std::function<GameObj::SharedPtr(GameObjManager*, Ogre::Billboard*, b2Body*)> FnType;
+
     GameObjManager(Application *app, const std::string& atlasXml);
     ~GameObjManager();
 
@@ -32,11 +34,19 @@ public:
 
     static const int PPM = 50.0f; // Pixels To Meters for Box2D
 private:
+    void registerObjects();
+    template<typename T> 
+    static GameObj::SharedPtr newObject(GameObjManager *mgr, Ogre::Billboard *bb, b2Body *body) 
+    {
+        return GameObj::SharedPtr(new T(mgr, bb, body)); 
+    }
+
     Ogre::BillboardSet *                ogreBillboardSet;
     b2World *                           boxWorld;
     Application *                       mApplication;
     GameObjContactListener              mContactListener;
     std::map<std::string, unsigned int> mTexcoords;
+    std::map<std::string, FnType>       mConstructors;
 };
 
 #endif /* end of include guard: GAMEOBJMANAGER_H_ */

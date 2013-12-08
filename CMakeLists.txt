@@ -81,6 +81,7 @@ set(HEADERS
     src/GameObjBall.h
     src/GameObjBrick.h
     src/GameObjContactListener.h
+    src/GameObjPaddle.h
     src/GameObjWall.h
     src/NLTmxMap.h
 )
@@ -94,6 +95,7 @@ set(SOURCES
     src/GameObjBall.cpp
     src/GameObjBrick.cpp
     src/GameObjContactListener.cpp
+    src/GameObjPaddle.cpp
     src/GameObjWall.cpp
     src/NLTmxMap.cpp
 )

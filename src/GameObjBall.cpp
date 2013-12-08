@@ -24,9 +24,9 @@ GameObjBall::GameObjBall(Game* game, const GameObjProp& prop) : GameObj(game)
     fd.density = 1.0f;
     fd.friction = 0.0f;
     fd.filter.categoryBits = GameObj::BALL;
-    fd.filter.maskBits = GameObj::BRICK | GameObj::WALL;
+    fd.filter.maskBits = GameObj::BRICK | GameObj::WALL | GameObj::PADDLE;
     mB2Body->CreateFixture(&fd);
-    mB2Body->SetLinearVelocity(b2Vec2(0.9, 0.9));
+    mB2Body->SetLinearVelocity(b2Vec2(29, 29));
 }
 
 GameObjBall::~GameObjBall() 

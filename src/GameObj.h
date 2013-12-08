@@ -22,9 +22,10 @@ public:
     typedef std::shared_ptr<GameObj> SharedPtr;
 
     enum type_ {
-        BALL  = 0x01, 
-        BRICK = 0x02, 
-        WALL  = 0x04
+        BALL   = 0x01, 
+        BRICK  = 0x02, 
+        PADDLE = 0x04,
+        WALL   = 0x08
     };
 
     enum state_ {

@@ -95,7 +95,7 @@ void Application::initGame()
     rgm->addResourceLocation("/home/eyenie/dev/arkanoid/assets", "FileSystem", "General");
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-    mGame = new Game(mSceneMgr);
+    mGame = new Game(mSceneMgr, ogreWindow);
     mGame->run("level1.tmx");
     mRoot->addFrameListener(mGame);
 }
@@ -119,7 +119,6 @@ void Application::mainLoop()
             }
         }
     
-        Ogre::WindowEventUtilities::messagePump();
         mRoot->renderOneFrame();
     } 
 }
